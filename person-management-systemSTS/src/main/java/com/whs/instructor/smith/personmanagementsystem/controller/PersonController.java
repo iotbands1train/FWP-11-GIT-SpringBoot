@@ -18,8 +18,7 @@ import com.whs.instructor.smith.personmanagementsystem.model.Person;
 import com.whs.instructor.smith.personmanagementsystem.model.RandomPerson;
 import com.whs.instructor.smith.personmanagementsystem.service.AdminServiceImpl;
 import com.whs.instructor.smith.personmanagementsystem.service.PersonServiceImpl;
-
-@RequestMapping("/")
+ 
 @Controller // This means that this class is a Controller
 public class PersonController {
 	@Autowired
@@ -30,7 +29,7 @@ public class PersonController {
 	AdminServiceImpl aS;
 	private long start;
 
-	@GetMapping("/aboutUs")
+	@RequestMapping("/aboutUs")
 	// about us section
 	// put bio about yourself like a CV / Resume
 	// explain your knowledge of software engineer
@@ -40,7 +39,7 @@ public class PersonController {
 		return "about";
 	}
 
-	@GetMapping("/")
+	@RequestMapping("/")
 	// This means that this method will be executed when user sends GET Requests to
 	// "/"
 	// In our case, "http://localhost:8080/"
@@ -50,7 +49,7 @@ public class PersonController {
 		return "login";
 	}
 
-	@GetMapping("/clearBatch")
+	@RequestMapping("/clearBatch")
 	public String clearBatch(Model model) {
 
 		pS.clear();
@@ -60,13 +59,13 @@ public class PersonController {
 		return viewPage(model, 1, "id", "asc");
 	}
 
-	@GetMapping("/batch")
+	@RequestMapping("/batch")
 	public String addBatch(Model model) {
 		model.addAttribute("num", Integer.valueOf(500));
 		return "batch";
 	}
 
-	@GetMapping("/addBatch")
+	@RequestMapping("/addBatch")
 	public String addBatch(Model model, @ModelAttribute Integer num) {
 		num = num == null || num < 500 ? 500 : num;
 		model.addAttribute("listPersons", pS.addBatch(num));
@@ -74,7 +73,7 @@ public class PersonController {
 		return viewPage(model, 1, "id", "asc");
 	}
 
-	@GetMapping("/home")
+	@RequestMapping("/home")
 	public String homePage(@ModelAttribute("user") String u, @ModelAttribute("pass") String p, Model model) {
 		if (aS.verifyAdmin(u, p)) {
 			model.addAttribute("size", pS.count());
@@ -86,7 +85,7 @@ public class PersonController {
 	}
 
 	// display list of persons
-	@GetMapping("/read")
+	@RequestMapping("/read")
 	// This means that this method will be executed when user sends GET Requests to
 	// "/"
 	// In our case, "http://localhost:8080/"
@@ -101,7 +100,7 @@ public class PersonController {
 	}
 
 	// showNewPersonForm
-	@GetMapping("/create")
+	@RequestMapping("/create")
 	// This means that this method will be executed when user sends GET Requests to
 	// "/showNewPersonForm"
 	// In our case, "http://localhost:8080/showNewPersonForm"
@@ -116,7 +115,7 @@ public class PersonController {
 	}
 
 	// add an person
-	@PostMapping("/save")
+	@RequestMapping("/save")
 	// This means that this method will be executed when user sends POST Requests to
 	// "/savePerson"
 	// In our case, "http://localhost:8080/savePerson"
@@ -131,7 +130,7 @@ public class PersonController {
 	}
 
 	// show update form
-	@GetMapping("/edit/{id}")
+	@RequestMapping("/edit/{id}")
 	// This means that this method will be executed when user sends GET Requests to
 	// "/showFormForUpdate/{person's id}"
 	// In our case, "http://localhost:8080/showFormForUpdate/{person's id}"
@@ -148,7 +147,7 @@ public class PersonController {
 	}
 
 	// delete the person by id
-	@GetMapping("/delete/{id}")
+	@RequestMapping("/delete/{id}")
 	// This means that this method will be executed when user sends GET Requests to
 	// "/delete/{person's id}"
 	// In our case, "http://localhost:8080/delete/{person's id}"
@@ -161,7 +160,7 @@ public class PersonController {
 	}
 
 	// show update form
-	@GetMapping("/search")
+	@RequestMapping("/search")
 	public String searchForm(Model model) {
 		List<Person> list = pS.getAllPersons();
 		Person lastPerson = list.get(list.size() - 1);
@@ -171,14 +170,14 @@ public class PersonController {
 	}
 
 	// show update form
-	@PostMapping("/search")
+	@RequestMapping("/search")
 	public String search(@RequestParam Long id, Model model) {
 		Person person = pS.getPersonById(id);
 		model.addAttribute("person", person);
 		return "results";
 	}
 
-	@GetMapping("/page/{pageNum}")
+	@RequestMapping("/page/{pageNum}")
 	public String viewPage(Model model, @PathVariable int pageNum,
 			@Param("sortField") String sortField, @Param("sortDir") String sortDir) {
 		start = (System.currentTimeMillis());
